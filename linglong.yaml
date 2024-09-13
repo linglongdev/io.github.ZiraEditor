@@ -1,0 +1,28 @@
+version: "1"
+
+package:
+  id: io.github.ZiraEditor
+  name: ZiraEditor
+  version: 2.1.1.1
+  kind: app
+  description: |
+    Zira Editor
+
+command:
+  - /opt/apps/io.github.ZiraEditor/files/bin/ZiraEditor
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/ziracms/editor.git
+    version: master
+    commit: 959a2612b8b71024fe49d27455cd79127d9de4de
+
+build: |
+  cd /project/linglong/sources/editor.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
